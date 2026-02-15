@@ -2,79 +2,33 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIBE SPORTS - Calibrada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VIBE SPORTS - QR VIP</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
     <style>
         :root { --bg: #0f172a; --card: #ffffff; --primary: #10b981; --secondary: #f43f5e; }
-        
-        body { 
-            background: var(--bg); 
-            font-family: 'Segoe UI', sans-serif; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; /* Alinha itens em coluna */
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            color: white; 
-        }
-
-        .container { width: 100%; max-width: 420px; padding: 15px; }
-
-        /* --- ESTILO DA LOGO --- */
-        .logo-topo {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .logo-topo img {
-            width: 180px; /* Ajuste este valor para diminuir ou aumentar a imagem */
-            height: auto;
-            border-radius: 10px; /* Opcional: arredonda cantos da imagem se necessário */
-        }
-
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; color: white; }
+        .container { width: 100%; max-width: 420px; padding: 15px; box-sizing: border-box; }
+        .logo-topo { text-align: center; margin-bottom: 20px; }
+        .logo-topo img { width: 150px; height: auto; }
         .card { background: var(--card); border-radius: 24px; padding: 25px; color: #1f2937; box-shadow: 0 20px 40px rgba(0,0,0,0.4); text-align: center; }
         .escondido { display: none !important; }
-        
-        input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #e5e7eb; border-radius: 12px; box-sizing: border-box; font-size: 16px; outline: none; }
-        input:focus { border-color: var(--primary); }
-        
+        input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #e5e7eb; border-radius: 12px; box-sizing: border-box; font-size: 16px; }
         button { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
-        .btn-main { background: var(--primary); color: white; font-size: 16px; }
+        .btn-main { background: var(--primary); color: white; }
         .btn-admin { background: #9ca3af; color: white; font-size: 11px; padding: 6px; margin-top: 25px; opacity: 0.6; }
         
-        /* ROLETA */
-        .roleta-wrapper { position: relative; width: 320px; height: 320px; margin: 25px auto; }
-        .marcador { 
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
-            width: 30px; height: 40px; background: #ef4444; 
-            clip-path: polygon(100% 0, 0 0, 50% 100%); z-index: 100;
-        }
+        /* QR Code Style */
+        #qrcode { background: white; padding: 15px; display: inline-block; margin-top: 15px; border-radius: 10px; }
 
-        .roleta { 
-            width: 100%; height: 100%; border-radius: 50%; position: relative; 
-            overflow: hidden; border: 6px solid #fff; 
-            transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1); background: #fff;
-            transform: rotate(-90deg); 
-        }
-
-        .fatia {
-            position: absolute; width: 50%; height: 50%;
-            transform-origin: bottom right;
-            transform: rotate(calc(18deg * var(--i))); 
-            background-color: var(--cor);
-            clip-path: polygon(100% 100%, 68% 0, 100% 0); 
-            display: flex; justify-content: flex-end; align-items: center;
-        }
-
-        .fatia span {
-            position: absolute; 
-            transform: rotate(81deg); 
-            top: 25px; right: 10px; font-weight: 800; font-size: 13px;
-            color: white; width: 35px; text-align: center;
-        }
-        
-        .admin-panel { border-top: 1px dashed #d1d5db; margin-top: 20px; padding-top: 20px; text-align: left; }
+        /* Roleta */
+        .roleta-wrapper { position: relative; width: 280px; height: 280px; margin: 25px auto; }
+        .marcador { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 30px; height: 40px; background: #ef4444; clip-path: polygon(100% 0, 0 0, 50% 100%); z-index: 100; }
+        .roleta { width: 100%; height: 100%; border-radius: 50%; position: relative; overflow: hidden; border: 6px solid #fff; transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1); background: #fff; transform: rotate(-90deg); }
+        .fatia { position: absolute; width: 50%; height: 50%; transform-origin: bottom right; transform: rotate(calc(18deg * var(--i))); background-color: var(--cor); clip-path: polygon(100% 100%, 68% 0, 100% 0); display: flex; justify-content: flex-end; align-items: center; }
+        .fatia span { position: absolute; transform: rotate(81deg); top: 20px; right: 8px; font-weight: 800; font-size: 11px; color: white; width: 30px; text-align: center; }
     </style>
 </head>
 <body>
@@ -85,107 +39,112 @@
         </div>
 
         <div id="tela-login" class="card">
-            <h2 style="margin:0">VIBE SPORTS</h2>
-            <p style="color: #6b7280">Digite seu nome para girar</p>
-            <input type="text" id="login-nome" placeholder="Seu nome completo">
-            <button class="btn-main" onclick="tentarAcesso()">ACESSAR ROLETA</button>
-            <button class="btn-admin" onclick="toggleAdmin()">PAINEL DO ADMINISTRADOR</button>
+            <h2 id="titulo-boas-vendas">VIBE SPORTS</h2>
+            <p id="subtitulo">Aponte o QR Code para girar!</p>
+            
+            <div id="area-qr-cliente" class="escondido">
+                <p>Escaneie o QR Code do vendedor para liberar seu giro.</p>
+            </div>
 
-            <div id="painel-admin" class="admin-panel escondido">
-                <h4 style="margin:0">Liberar Acesso</h4>
-                <input type="text" id="adm-nome" placeholder="Nome">
-                <input type="number" id="adm-valor" placeholder="Valor da Compra (R$)">
-                <button class="btn-main" style="background: #374151;" onclick="cadastrarCliente()">SALVAR</button>
-                <div id="msg-adm" style="font-size: 12px; color: #059669; margin-top:5px; text-align:center"></div>
+            <button class="btn-admin" onclick="toggleAdmin()">PAINEL DO VENDEDOR</button>
+
+            <div id="painel-admin" class="escondido" style="border-top: 1px dashed #ccc; margin-top:20px; padding-top:10px;">
+                <h4>Liberar Novo Giro</h4>
+                <input type="text" id="adm-nome" placeholder="Nome do Cliente">
+                <input type="number" id="adm-valor" placeholder="Valor R$">
+                <button class="btn-main" onclick="gerarQRCode()">GERAR QR CODE</button>
+                <div id="qrcode"></div>
+                <p style="font-size: 10px;">O cliente deve escanear este código.</p>
             </div>
         </div>
 
         <div id="tela-roleta" class="card escondido">
-            <h3 id="bem-vindo" style="margin:0; color: #374151;"></h3>
+            <h3 id="bem-vindo"></h3>
             <div class="roleta-wrapper">
                 <div class="marcador"></div>
                 <div id="disco" class="roleta"></div>
             </div>
-            <button id="btn-girar" class="btn-main" style="background:var(--secondary)" onclick="girar()">GIRAR AGORA!</button>
-            <h2 id="resultado" style="margin-top:20px; font-size: 26px;"></h2>
+            <button id="btn-girar" class="btn-main" style="background:var(--secondary)" onclick="girar()">GIRAR!</button>
+            <h2 id="resultado" style="margin-top:20px;"></h2>
         </div>
     </div>
 
     <script>
-        let clienteAtual = null;
+        let clienteAtual = { nome: "", valor: 0 };
         let grausAcumulados = 0;
 
+        // 1. CHECAR SE O CLIENTE ENTROU VIA QR CODE
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const nomeUrl = urlParams.get('n');
+            const valorUrl = urlParams.get('v');
+
+            if (nomeUrl && valorUrl) {
+                clienteAtual.nome = nomeUrl;
+                clienteAtual.valor = parseFloat(valorUrl);
+                
+                document.getElementById('tela-login').classList.add('escondido');
+                document.getElementById('tela-roleta').classList.remove('escondido');
+                document.getElementById('bem-vindo').innerText = `BOA SORTE, ${nomeUrl.toUpperCase()}!`;
+            }
+        };
+
+        // 2. GERAR O QR CODE NO CELULAR DO ADMIN
+        function gerarQRCode() {
+            const nome = document.getElementById('adm-nome').value.trim();
+            const valor = document.getElementById('adm-valor').value;
+            const qrDiv = document.getElementById('qrcode');
+            
+            if(!nome || !valor) return alert("Preencha nome e valor!");
+
+            qrDiv.innerHTML = ""; // Limpa QR anterior
+            
+            // Cria a URL com os dados (Pega o link atual do GitHub)
+            const baseUrl = window.location.href.split('?')[0];
+            const linkFinal = `${baseUrl}?n=${encodeURIComponent(nome)}&v=${valor}`;
+
+            new QRCode(qrDiv, {
+                text: linkFinal,
+                width: 150,
+                height: 150
+            });
+        }
+
+        function toggleAdmin() {
+            const s = prompt("Senha:");
+            if(s === "1234") document.getElementById('painel-admin').classList.toggle('escondido');
+        }
+
+        // 3. LÓGICA DA ROLETA (20 fatias calibradas)
         const disco = document.getElementById('disco');
         for (let i = 1; i <= 20; i++) {
             const cor = i % 2 === 0 ? '#1e40af' : '#1e3a8a'; 
             disco.innerHTML += `<div class="fatia" style="--i:${i-1}; --cor:${cor}"><span>${i}</span></div>`;
         }
 
-        function toggleAdmin() {
-            const senha = prompt("Senha:");
-            if(senha === "1234") document.getElementById('painel-admin').classList.toggle('escondido');
-        }
-
-        function cadastrarCliente() {
-            const nome = document.getElementById('adm-nome').value.trim().toLowerCase();
-            const valor = parseFloat(document.getElementById('adm-valor').value);
-            if(!nome || isNaN(valor)) return alert("Preencha corretamente.");
-
-            let lista = JSON.parse(localStorage.getItem('db_roleta_fix')) || [];
-            lista.push({ nome, valor });
-            localStorage.setItem('db_roleta_fix', JSON.stringify(lista));
-            
-            document.getElementById('msg-adm').innerText = `✅ Liberado para ${nome}!`;
-            document.getElementById('adm-nome').value = "";
-            document.getElementById('adm-valor').value = "";
-        }
-
-        function tentarAcesso() {
-            const nome = document.getElementById('login-nome').value.trim().toLowerCase();
-            let lista = JSON.parse(localStorage.getItem('db_roleta_fix')) || [];
-            const user = lista.find(c => c.nome === nome);
-
-            if(user) {
-                clienteAtual = user;
-                document.getElementById('tela-login').classList.add('escondido');
-                document.getElementById('tela-roleta').classList.remove('escondido');
-                document.getElementById('bem-vindo').innerText = `Boa sorte, ${user.nome.toUpperCase()}!`;
-            } else {
-                alert("Nome não cadastrado.");
-            }
-        }
-
         function girar() {
             const btn = document.getElementById('btn-girar');
             btn.disabled = true;
-            document.getElementById('resultado').innerText = "Girando...";
             
             let num;
             const v = clienteAtual.valor;
-
             if (v <= 50) num = Math.floor(Math.random() * 7) + 1;
             else if (v <= 150) num = Math.floor(Math.random() * 8) + 8;
             else num = Math.floor(Math.random() * 5) + 16;
 
             const grausPorFatia = 18;
-            const voltasSorteio = 1800; 
+            const anguloFixo = (360 - ((num - 1) * grausPorFatia)) - 9;
+            grausAcumulados += 1800 + anguloFixo;
             
-            // Calibrado para parar no centro da fatia correta
-            const anguloFixo = (360 - ((num - 02) * grausPorFatia)) - (grausPorFatia / 2);
-            
-            grausAcumulados += voltasSorteio + anguloFixo;
             document.getElementById('disco').style.transform = `rotate(${grausAcumulados}deg)`;
 
             setTimeout(() => {
-                document.getElementById('resultado').innerHTML = `SORTEADO:<br><span style="color:var(--primary); font-size:48px">${num}</span>`;
+                document.getElementById('resultado').innerHTML = `SORTEADO: ${num}`;
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                
-                let lista = JSON.parse(localStorage.getItem('db_roleta_fix'));
-                lista = lista.filter(c => c.nome !== clienteAtual.nome);
-                localStorage.setItem('db_roleta_fix', JSON.stringify(lista));
+                // Remove os parâmetros da URL para evitar múltiplos giros
+                setTimeout(() => { window.history.replaceState({}, document.title, window.location.pathname); }, 2000);
             }, 5000);
         }
     </script>
 </body>
-
 </html>
