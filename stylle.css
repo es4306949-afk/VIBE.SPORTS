@@ -1,0 +1,63 @@
+/* ... (mantenha o CSS anterior da roleta e adicione estes abaixo) ... */
+
+.escondido { display: none; }
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    color: #333;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    width: 320px;
+    margin: 0 auto;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#btnConfirmar {
+    width: 100%;
+    background: #05c46b;
+    border-bottom: 4px solid #04a55a;
+}
+
+/* Ajustes para Celulares (Telas menores que 480px) */
+@media (max-width: 480px) {
+    .container {
+        max-width: 95%; /* Ocupa quase a largura toda do celular */
+        padding: 10px;
+    }
+
+    .roleta-wrapper {
+        width: 280px; /* Diminui um pouco a roleta para não apertar */
+        height: 280px;
+    }
+
+    .logo-topo img {
+        width: 140px; /* Logo um pouco menor no celular */
+    }
+
+    .card {
+        padding: 15px; /* Reduz o espaçamento interno do card */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Diminui o título para não quebrar linha */
+    }
+}
